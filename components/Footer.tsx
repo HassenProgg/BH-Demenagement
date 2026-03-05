@@ -1,7 +1,12 @@
 import React from 'react';
 import { Facebook, Instagram, Phone, Mail, MapPin, Linkedin, Twitter } from 'lucide-react';
+import { LegalPageType } from './LegalModal'; // Import type
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenLegal: (page: LegalPageType) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
   return (
     <footer className="bg-brand-dark text-slate-300 pt-16 pb-8 border-t border-slate-800">
       <div className="container mx-auto px-4">
@@ -37,7 +42,15 @@ export const Footer: React.FC = () => {
                 <div className="mt-1 mr-3 p-1.5 rounded-full bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">
                   <Phone size={14} />
                 </div>
-                <a href="tel:+21694318659" className="hover:text-brand-orange transition-colors">
+                <a 
+                  href="tel:+21694318659" 
+                  className="hover:text-brand-orange transition-colors"
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'click', { event_category: 'contact', event_label: 'Footer Phone' });
+                    }
+                  }}
+                >
                   <span className="block text-white font-medium mb-1 group-hover:text-brand-orange transition-colors">Téléphone</span>
                   +216 94 318 659
                 </a>
@@ -46,7 +59,15 @@ export const Footer: React.FC = () => {
                 <div className="mt-1 mr-3 p-1.5 rounded-full bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">
                   <Mail size={14} />
                 </div>
-                <a href="mailto:contact@demenagement-bh.tn" className="hover:text-brand-orange transition-colors">
+                <a 
+                  href="mailto:contact@demenagement-bh.tn" 
+                  className="hover:text-brand-orange transition-colors"
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'click', { event_category: 'contact', event_label: 'Footer Email' });
+                    }
+                  }}
+                >
                   <span className="block text-white font-medium mb-1 group-hover:text-brand-orange transition-colors">Email</span>
                   contact@demenagement-bh.tn
                 </a>
@@ -107,10 +128,10 @@ export const Footer: React.FC = () => {
 
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
           <p>&copy; {new Date().getFullYear()} BH Déménagement. Tous droits réservés.</p>
-          <div className="flex items-center gap-6 mt-4 md:mt-0">
-             <a href="#" className="hover:text-white transition-colors">Mentions Légales</a>
-             <a href="#" className="hover:text-white transition-colors">Politique de Confidentialité</a>
-             <a href="#" className="hover:text-white transition-colors">CGV</a>
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 mt-4 md:mt-0">
+             <button onClick={() => onOpenLegal('mentions')} className="hover:text-white transition-colors">Mentions Légales</button>
+             <button onClick={() => onOpenLegal('confidentialite')} className="hover:text-white transition-colors">Politique de Confidentialité</button>
+             <button onClick={() => onOpenLegal('cgv')} className="hover:text-white transition-colors">CGV</button>
           </div>
         </div>
       </div>

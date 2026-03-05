@@ -7,6 +7,11 @@ export const WhatsAppButton: React.FC = () => {
       href="https://wa.me/21694318659" 
       target="_blank" 
       rel="noopener noreferrer"
+      onClick={() => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'click', { event_category: 'outbound', event_label: 'WhatsApp' });
+        }
+      }}
       className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-lg hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-110 animate-bounce flex items-center justify-center group"
       aria-label="Contactez-nous sur WhatsApp"
     >

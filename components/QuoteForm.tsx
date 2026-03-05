@@ -97,12 +97,26 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({ label, icon: Icon, 
 export const QuoteForm: React.FC = () => {
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<QuoteFormData>();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const departureCity = watch("departureCity");
   const arrivalCity = watch("arrivalCity");
 
   const onSubmit = async (data: QuoteFormData) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
     
+    // Google Analytics - Track Event
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'generate_lead', {
+        currency: 'TND',
+        value: 1,
+        event_category: 'form',
+        event_label: 'Demande de Devis'
+      });
+    }
+
     // Assemble the message
     const message = `🚚 *Nouvelle demande de devis !*
 *Nom:* ${data.fullName}
@@ -118,7 +132,7 @@ export const QuoteForm: React.FC = () => {
     
     if (BOT_TOKEN && CHAT_ID) {
       try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -127,12 +141,25 @@ export const QuoteForm: React.FC = () => {
             parse_mode: 'Markdown'
           })
         });
+
+        if (!response.ok) {
+          throw new Error("Erreur serveur Telegram");
+        }
+        setIsSubmitted(true);
       } catch (error) {
         console.error("Erreur Telegram:", error);
+        setSubmitError("Une erreur s'est produite lors de l'envoi. Veuillez réessayer ou nous contacter par téléphone.");
       }
+    } else {
+      // Fallback if no env variables (to allow visual testing locally)
+      setTimeout(() => {
+        setIsSubmitted(true);
+        setIsSubmitting(false);
+      }, 800);
+      return;
     }
-
-    setIsSubmitted(true);
+    
+    setIsSubmitting(false);
   };
 
   if (isSubmitted) {
@@ -177,11 +204,15 @@ export const QuoteForm: React.FC = () => {
             <div className="relative group">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-orange transition-colors" size={18} />
               <input
-                {...register("fullName", { required: true })}
-                className={`w-full pl-10 pr-4 py-3 bg-slate-50 border ${errors.fullName ? 'border-red-400' : 'border-slate-200'} rounded-xl focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none transition-all text-sm font-medium placeholder:text-slate-400`}
+                {...register("fullName", { 
+                  required: "Le nom est requis", 
+                  minLength: { value: 3, message: "Nom trop court" } 
+                })}
+                className={`w-full pl-10 pr-4 py-3 bg-slate-50 border ${errors.fullName ? 'border-red-400 focus:ring-red-400/20 focus:border-red-400' : 'border-slate-200 focus:ring-brand-orange/20 focus:border-brand-orange'} rounded-xl outline-none transition-all text-sm font-medium placeholder:text-slate-400 focus:ring-2`}
                 placeholder="Votre nom"
               />
             </div>
+            {errors.fullName && <p className="text-red-500 text-xs mt-1 ml-1">{errors.fullName.message}</p>}
           </div>
 
           <div className="space-y-1.5">
@@ -189,11 +220,19 @@ export const QuoteForm: React.FC = () => {
             <div className="relative group">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-orange transition-colors" size={18} />
               <input
-                {...register("phone", { required: true })}
-                className={`w-full pl-10 pr-4 py-3 bg-slate-50 border ${errors.phone ? 'border-red-400' : 'border-slate-200'} rounded-xl focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none transition-all text-sm font-medium placeholder:text-slate-400`}
-                placeholder="22 333 444"
+                type="tel"
+                {...register("phone", { 
+                  required: "Le téléphone est requis",
+                  pattern: {
+                    value: /^[0-9]{8}$/,
+                    message: "Numéro invalide (8 chiffres requis)"
+                  }
+                })}
+                className={`w-full pl-10 pr-4 py-3 bg-slate-50 border ${errors.phone ? 'border-red-400 focus:ring-red-400/20 focus:border-red-400' : 'border-slate-200 focus:ring-brand-orange/20 focus:border-brand-orange'} rounded-xl outline-none transition-all text-sm font-medium placeholder:text-slate-400 focus:ring-2`}
+                placeholder="Ex: 22 333 444"
               />
             </div>
+            {errors.phone && <p className="text-red-500 text-xs mt-1 ml-1">{errors.phone.message}</p>}
           </div>
         </div>
 
@@ -251,6 +290,7 @@ export const QuoteForm: React.FC = () => {
                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-orange transition-colors" size={18} />
                <input
                 type="date"
+                min={new Date().toISOString().split('T')[0]}
                 {...register("date")}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none transition-all text-sm font-medium text-slate-700"
               />
@@ -258,12 +298,26 @@ export const QuoteForm: React.FC = () => {
           </div>
         </div>
 
+        {submitError && (
+          <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">
+            {submitError}
+          </div>
+        )}
+
         <button 
           type="submit" 
-          className="w-full bg-gradient-to-r from-brand-orange to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center mt-4"
+          disabled={isSubmitting}
+          className="w-full bg-gradient-to-r from-brand-orange to-orange-600 hover:from-orange-500 hover:to-orange-700 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center mt-4"
         >
-          <Send size={18} className="mr-2" />
-          Envoyer ma demande
+          {isSubmitting ? (
+            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          ) : (
+            <Send size={18} className="mr-2" />
+          )}
+          {isSubmitting ? 'Traitement en cours...' : 'Envoyer ma demande'}
         </button>
         
         <p className="text-center text-xs text-slate-400 mt-4">

@@ -71,13 +71,30 @@ export const TrustSection: React.FC = () => {
           <p className="text-slate-600 text-lg mb-8">
             Découvrez les retours de nos clients satisfaits à travers toute la Tunisie.
           </p>
-          <button 
-            onClick={() => setShowForm(true)}
-            className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-brand-primary border-2 border-brand-primary px-6 py-3 rounded-full font-bold transition-all shadow-sm hover:shadow-md"
-          >
-            <Plus size={20} />
-            Ajouter un avis
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a 
+              href="https://maps.app.goo.gl/G5WvpLhM5edDAwPf7"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'click', { event_category: 'outbound', event_label: 'Google Maps Review' });
+                }
+              }}
+              className="w-full sm:w-auto flex items-center justify-center gap-3 bg-white text-slate-800 border-2 border-slate-200 px-6 py-3.5 rounded-2xl font-bold hover:border-brand-orange hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+            >
+              <img src="https://cdn.worldvectorlogo.com/logos/google-g-2015.svg" alt="Google" className="w-5 h-5" />
+              Noter sur Google Maps
+            </a>
+            
+            <button 
+              onClick={() => setShowForm(true)}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-primary/10 hover:bg-brand-primary hover:text-white text-brand-primary px-6 py-3.5 rounded-2xl font-bold transition-all duration-300"
+            >
+              <Plus size={20} />
+              Avis sur le site
+            </button>
+          </div>
         </div>
 
         {/* Grid */}

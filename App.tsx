@@ -11,8 +11,11 @@ import { ShieldCheck, Clock, Award, Phone } from 'lucide-react';
 import { GallerySection } from './components/GallerySection';
 
 import { MapSection } from './components/MapSection';
+import { LegalModal, LegalPageType } from './components/LegalModal';
 
 const App: React.FC = () => {
+  const [activeLegalPage, setActiveLegalPage] = useState<LegalPageType>(null);
+
   const scrollToQuote = () => {
     const element = document.getElementById('quote-section');
     if (element) {
@@ -63,7 +66,7 @@ const App: React.FC = () => {
         <div className="container mx-auto px-4 py-12 lg:py-20" id="quote-section">
           <div className="flex flex-col lg:flex-row gap-16 items-start">
              {/* Left Content */}
-            <div className="lg:w-1/2 space-y-8 sticky top-24">
+            <div className="lg:w-1/2 space-y-8 lg:sticky lg:top-24">
                <div className="inline-block px-4 py-1.5 rounded-full bg-brand-orange/10 text-brand-orange font-semibold text-sm mb-2">
                  Devis Gratuit & Sans Engagement
                </div>
@@ -108,8 +111,13 @@ const App: React.FC = () => {
         <MapSection />
       </main>
 
-      <Footer />
+      <Footer onOpenLegal={setActiveLegalPage} />
       <WhatsAppButton />
+
+      <LegalModal 
+        page={activeLegalPage} 
+        onClose={() => setActiveLegalPage(null)} 
+      />
     </div>
   );
 };

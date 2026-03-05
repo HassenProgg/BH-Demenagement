@@ -41,8 +41,8 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteClick }) => {
             
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light animate-fade-in-up [animation-delay:400ms]">
-              Profitez d'un service <span className="text-white font-semibold">premium</span> et sans stress. 
-              Équipe professionnelle, emballage soigné et transport sécurisé partout en Tunisie.
+              Profitez d'un service <span className="text-white font-semibold">premium</span> et sans stress partout en Tunisie (Tunis, Sousse, Sfax...). 
+              Garantie casse, assurance intégrale et respect strict des délais.
             </p>
 
             {/* CTA Buttons */}
