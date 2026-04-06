@@ -117,46 +117,20 @@ export const QuoteForm: React.FC = () => {
       });
     }
 
-    // Assemble the message
-    const message = `🚚 *Nouvelle demande de devis !*
-*Nom:* ${data.fullName}
-*Tél:* ${data.phone}
-*De:* ${data.departureCity}
-*Vers:* ${data.arrivalCity}
-*Type:* ${data.moveType}
-*Date:* ${data.date || 'Non spécifiée'}`;
+    try {
+      const response = await fetch('/api/send-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    // 1. Send to Telegram
-    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-    const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-    
-    if (BOT_TOKEN && CHAT_ID) {
-      try {
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message,
-            parse_mode: 'Markdown'
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error("Erreur serveur Telegram");
-        }
-        setIsSubmitted(true);
-      } catch (error) {
-        console.error("Erreur Telegram:", error);
-        setSubmitError("Une erreur s'est produite lors de l'envoi. Veuillez réessayer ou nous contacter par téléphone.");
+      if (!response.ok) {
+        throw new Error("Erreur serveur");
       }
-    } else {
-      // Fallback if no env variables (to allow visual testing locally)
-      setTimeout(() => {
-        setIsSubmitted(true);
-        setIsSubmitting(false);
-      }, 800);
-      return;
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Erreur envoi:", error);
+      setSubmitError("Une erreur s'est produite lors de l'envoi. Veuillez réessayer ou nous contacter par téléphone.");
     }
     
     setIsSubmitting(false);
