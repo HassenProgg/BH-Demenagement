@@ -33,7 +33,12 @@ const HOME_LAT = 37.0659;
 const HOME_LNG = 10.0975;
 const HOME_ZOOM = 14;
 
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
 function buildMapSrc(lat: number, lng: number, zoom: number = 13) {
+  if (GOOGLE_MAPS_API_KEY) {
+    return `https://www.google.com/maps/embed/v1/view?key=${GOOGLE_MAPS_API_KEY}&center=${lat},${lng}&zoom=${zoom}`;
+  }
   return `https://maps.google.com/maps?q=${lat},${lng}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`;
 }
 
