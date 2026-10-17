@@ -84,7 +84,8 @@ const App: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-medium text-slate-900">Une question ? Appelez-nous</p>
-                    <p className="text-2xl font-bold text-brand-primary">94 318 659</p>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-2xl font-bold text-brand-primary"><a href="tel:+21694318659" className="whitespace-nowrap hover:underline">94 318 659</a><a href="tel:+21695527492" className="whitespace-nowrap hover:underline">95 527 492</a></div>
+                    <a href="https://wa.me/21695527492" target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-sm font-semibold text-green-700 hover:underline">WhatsApp : 95 527 492</a>
                     <p className="text-xs text-slate-400 mt-1">Disponible 7j/7 de 8h à 20h</p>
                   </div>
                </div>

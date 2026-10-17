@@ -3,9 +3,9 @@ import { MessageCircle } from 'lucide-react';
 
 export const WhatsAppButton: React.FC = () => {
   return (
-    <a 
-      href="https://wa.me/21694318659" 
-      target="_blank" 
+    <a
+      href="https://wa.me/21695527492"
+      target="_blank"
       rel="noopener noreferrer"
       onClick={() => {
         if (typeof window !== 'undefined' && (window as any).gtag) {

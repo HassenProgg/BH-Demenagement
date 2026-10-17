@@ -18,7 +18,7 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteClick }) => {
 
       <div className="relative z-10 container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          
+
           {/* Left Content */}
           <div className="lg:w-1/2 max-w-2xl text-center lg:text-left">
             {/* Trust Badge */}
@@ -30,7 +30,7 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteClick }) => {
                 N°1 Déménagement en Tunisie
               </span>
             </div>
-            
+
             {/* Headline */}
             <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-[1.1] mb-8 tracking-tight drop-shadow-xl animate-fade-in-up [animation-delay:200ms]">
               Votre déménagement, <br/>
@@ -38,29 +38,38 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteClick }) => {
                 Notre Expertise.
               </span>
             </h1>
-            
+
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light animate-fade-in-up [animation-delay:400ms]">
-              Profitez d'un service <span className="text-white font-semibold">premium</span> et sans stress partout en Tunisie (Tunis, Sousse, Sfax...). 
+              Profitez d'un service <span className="text-white font-semibold">premium</span> et sans stress partout en Tunisie (Tunis, Sousse, Sfax...).
               Garantie casse, assurance intégrale et respect strict des délais.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-16 animate-fade-in-up [animation-delay:600ms]">
-              <button 
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start mb-16 animate-fade-in-up [animation-delay:600ms]">
+              <button
                 onClick={onQuoteClick}
                 className="bg-brand-orange hover:bg-orange-600 text-white text-lg font-bold px-10 py-5 rounded-2xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center group"
               >
                 Devis Gratuit
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </button>
-              <a 
+              <div className="flex flex-wrap items-center gap-3">
+<a
                 href="tel:+21694318659"
                 className="bg-white/5 border border-white/10 text-white hover:bg-white/10 text-lg font-bold px-10 py-5 rounded-2xl backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:shadow-glow"
               >
                 <Phone size={20} className="mr-3 text-brand-orange font-bold" />
                 94 318 659
               </a>
+<a
+                href="tel:+21695527492"
+                className="bg-white/5 border border-white/10 text-white hover:bg-white/10 text-lg font-bold px-10 py-5 rounded-2xl backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:shadow-glow"
+              >
+                <Phone size={20} className="mr-3 text-brand-orange font-bold" />
+                95 527 492
+              </a>
+</div>
             </div>
 
             {/* Features Grid */}
@@ -84,12 +93,12 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteClick }) => {
           <div className="lg:w-1/2 relative lg:h-auto z-20 hidden md:block">
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 group transform hover:scale-[1.02] transition-transform duration-700">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity"></div>
-              <img 
-                src="/images/truck.jpg" 
-                alt="Camion BH Déménagement" 
+              <img
+                src="/images/truck.jpg"
+                alt="Camion BH Déménagement"
                 className="w-full h-auto object-cover"
               />
-              
+
               {/* Floating Info Card */}
               <div className="absolute bottom-8 left-8 right-8 z-20 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                 <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-5 rounded-2xl flex items-center justify-between shadow-lg">

@@ -25,7 +25,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
               <a href="https://www.facebook.com/profile.php?id=61587194676207" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all duration-300 border border-white/10">
                 <Facebook size={18} />
               </a>
-              <a href="https://www.instagram.com/demenagement_bh_tunisie?igsh=bmxuZHE0eWE3YWZx" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all duration-300 border border-white/10">
+              <a href="https://www.instagram.com/demenagement_bh_/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all duration-300 border border-white/10">
                 <Instagram size={18} />
               </a>
             </div>
@@ -54,6 +54,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
                   <span className="block text-white font-medium mb-1 group-hover:text-brand-orange transition-colors">Téléphone</span>
                   +216 94 318 659
                 </a>
+              </li>
+              <li className="flex items-start group">
+                <div className="mt-1 mr-3 p-1.5 rounded-full bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">
+                  <Phone size={14} />
+                </div>
+                <div>
+                  <span className="block text-white font-medium mb-1">Téléphone / WhatsApp</span>
+                  <a href="tel:+21695527492" className="hover:text-brand-orange transition-colors">+216 95 527 492</a>
+                  <a href="https://wa.me/21695527492" target="_blank" rel="noopener noreferrer" className="block mt-1 text-green-400 hover:underline">Écrire sur WhatsApp</a>
+                </div>
               </li>
               <li className="flex items-start group">
                 <div className="mt-1 mr-3 p-1.5 rounded-full bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">

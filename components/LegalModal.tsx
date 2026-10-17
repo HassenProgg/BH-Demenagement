@@ -31,7 +31,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ page, onClose }) => {
         <div className="space-y-4 text-sm text-slate-600 leading-relaxed">
           <p><strong>Raison sociale :</strong> BH Déménagement</p>
           <p><strong>Siège social :</strong> Kalaât el Andalous, Tunisie</p>
-          <p><strong>Téléphone :</strong> +216 94 318 659</p>
+          <p><strong>Téléphone :</strong> +216 94 318 659 / +216 95 527 492</p>
           <p><strong>Email :</strong> contact@demenagement-bh.tn</p>
           <h4 className="font-bold text-slate-900 mt-6 mb-2">Propriété intellectuelle</h4>
           <p>L'ensemble de ce site relève de la législation tunisienne et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés.</p>

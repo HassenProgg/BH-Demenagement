@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Quote, Plus, X } from 'lucide-react';
 import { Review } from '../types';
-import { supabase } from '../services/supabase';
 
 const defaultReviews: Review[] = [
   {
@@ -31,58 +30,29 @@ export const TrustSection: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>(defaultReviews);
   const [showForm, setShowForm] = useState(false);
   const [newReview, setNewReview] = useState({ name: '', city: '', rating: 5, text: '' });
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchReviews();
+    const saved = localStorage.getItem('bh_demenagement_reviews');
+    if (saved) {
+      setReviews(JSON.parse(saved));
+    }
   }, []);
 
-  const fetchReviews = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .order('id', { ascending: false });
-        
-      if (error) throw error;
-      
-      if (data && data.length > 0) {
-        setReviews(data);
-      }
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newReview.name || !newReview.city || !newReview.text) return;
     
-    const reviewData = {
-      name: newReview.name,
-      city: newReview.city,
-      rating: newReview.rating,
-      text: newReview.text
+    const review: Review = {
+      id: Date.now(),
+      ...newReview
     };
     
-    try {
-      const tempId = Date.now();
-      const newReviewObj: Review = { id: tempId, ...reviewData };
-      
-      setReviews([newReviewObj, ...reviews]);
-      setShowForm(false);
-      setNewReview({ name: '', city: '', rating: 5, text: '' });
-      
-      const { error } = await supabase
-        .from('reviews')
-        .insert([reviewData]);
-        
-      if (error) throw error;
-    } catch (err) {
-      console.error('Error saving review:', err);
-    }
+    // Add new review to the beginning of the list
+    const updated = [review, ...reviews];
+    setReviews(updated);
+    localStorage.setItem('bh_demenagement_reviews', JSON.stringify(updated));
+    setShowForm(false);
+    setNewReview({ name: '', city: '', rating: 5, text: '' });
   };
 
   return (
